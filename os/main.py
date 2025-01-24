@@ -11,14 +11,11 @@ app = FastAPI()
 async def read_root():
     return {"Hello": "World"}
 
-@app.get("/time/")
-async def read_time():
-    return get_time()
+apps = {
+    "time": lambda: get_time(),
+    "weather": lambda: get_weather(long=48.2081, lat=16.3713)
+}
 
-@app.get("/weather/")
-async def read_weather():
-    return get_weather(long=48.2081, lat=16.3713)
-
-@app.get("/items/{item_id}")
-async def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/command/{app_name}")
+async def run_app(app_name: str, q: Union[str, None] = None):
+    return apps[app_name]()
