@@ -6,35 +6,56 @@ void waitForStartOfCycle() {
   }
 }
 
-std::pair<int, int> getPinAndCycleFromKey(String key) {
+KeyInfo getPinAndCycleFromKey(String key) {
   for (int t = 0; t < 9; t++) {
     for (int p = 0; p < 8; p++) {
       if (keyMapping[p][t] == key) {
-        return { p, t };
+        return {false, p, t};
+      }
+      if (keyMappingShift[p][t] == key) {
+        return {true, p, t};
       }
     }
   }
-  return {5, 0};
+  return {false, 5, 0};
 }
 
 void writeKey(String key) {
   int charCounter = 0;
-  std::pair<int, int> keyInfo = getPinAndCycleFromKey(key);
-  int pin = pinMapping[keyInfo.first];
-  int timeOffset = keyInfo.second;
+  KeyInfo keyInfo = getPinAndCycleFromKey(key);
+  int pin = pinMapping[keyInfo.pin];
+  int timeOffset = keyInfo.offset;
+
+  bool shift = keyInfo.shift;
+  int shiftPin = pinMapping[7];
+  int shiftOffset = 7;
 
   waitForStartOfCycle();
 
-  delay(timeOffset * 2);
-  for (int i = 0; i < CHAR_REPEAT; i++) {
-    delay(1);
-    pinMode(pin, OUTPUT);
-    digitalWrite(pin, LOW);
-    delay(2);
-    pinMode(pin, INPUT);
-    delay(1);
+  for (int i = 0; i < 3; i++) {
+    for (int t = 0; t < 9; t++) {
+      delay(1);
+      // Shift key needs to be pressed before key itself
+      if (!shift || (shift && i != 0)) {
+        if (t == timeOffset) {
+          pinMode(pin, OUTPUT);
+          digitalWrite(pin, LOW);
+        }
+        if (t == timeOffset + 1) {
+          pinMode(pin, INPUT);
+        }
+      }
 
-    delay(14);
+      if (shift && t == shiftOffset) {
+        pinMode(shiftPin, OUTPUT);
+        digitalWrite(shiftPin, LOW);
+      }
+      if (shift && t == shiftOffset + 1) {
+        pinMode(shiftPin, INPUT);
+      }
+      delay(1);
+    }
+    pinMode(pin, INPUT);
   }
 
   delay(TIME_BETWEEN_CHAR);
