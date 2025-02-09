@@ -1,3 +1,13 @@
+#include <WiFi.h>
+#include <ESPmDNS.h>
+#include <NetworkUdp.h>
+#include <ArduinoOTA.h>
+
+#include "config.h"
+// Set these values in a config.h:
+// const char *ssid = "...";
+// const char *password = "...";
+
 #define ROW_SELECT_PIN 4
 
 #define CHAR_REPEAT 2
@@ -37,8 +47,23 @@ void setup() {
     pinMode(pinMapping[p], INPUT);
   }
   pinMode(ROW_SELECT_PIN, INPUT);
-
   attachInterrupt(ROW_SELECT_PIN, rowSelectISR, FALLING);
+
+  setupWiFi();
+  setupOTA();
+}
+
+void setupWiFi() {
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+  while (WiFi.waitForConnectResult() != WL_CONNECTED) {
+    Serial.println("Connection Failed! Rebooting...");
+    delay(5000);
+    ESP.restart();
+  }
+
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
 void onKey(String key) {
@@ -50,5 +75,6 @@ void onKey(String key) {
 
 void loop() {
   updateRead();
+  updateOTA();
   delayMicroseconds(500);
 }
