@@ -14,6 +14,7 @@ std::pair<int, int> getPinAndCycleFromKey(String key) {
       }
     }
   }
+  return {5, 0};
 }
 
 void writeKey(String key) {

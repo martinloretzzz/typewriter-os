@@ -2,11 +2,13 @@
 #include <ESPmDNS.h>
 #include <NetworkUdp.h>
 #include <ArduinoOTA.h>
+#include <HTTPClient.h>
 
 #include "config.h"
 // Set these values in a config.h:
 // const char *ssid = "...";
 // const char *password = "...";
+// const char *api = "...";
 
 #define ROW_SELECT_PIN 4
 
@@ -16,11 +18,11 @@
 String keyMapping[8][9] = {
   { "4", "5", "8", "1", "9", "ß", "FILE", "TW/WP", "`" },
   { "3", "6", "7", "2", "j", "0", "ö", "CANCEL", "l" },
-  { "w", "r", "z", "q", "i", "p", "+", "ENTER", "#" },
+  { "w", "r", "z", "q", "i", "p", "+", "\n", "#" },
   { "e", "t", "h", "y", "u", "o", "ü", "IND REV", "k" },
   { "d", "c", "g", "a", "b", "m", "LEFT", "DEL", "." },
   { "x", "f", "v", "s", "n", ",", "DOWN", "WORD OUT", "-" },
-  { "", "", "", "", "", "", "CODE", "SPACE", "ä" },
+  { "", "", "", "", "", "", "CODE", " ", "ä" },
   { "P IND", "UP", "", "LCAPS", "RIGHT", "MENU", "", "SHIFT", "" }
 };
 
@@ -68,8 +70,11 @@ void setupWiFi() {
 
 void onKey(String key) {
   Serial.println(key);
-  if (key == "SPACE") {
-    write("helloworld");
+  if (key == " ") {
+    write("weather");
+    String answer = getCommandResult("weather");
+    write(answer);
+    Serial.println(answer);
   }
 }
 
