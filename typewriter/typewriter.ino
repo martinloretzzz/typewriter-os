@@ -26,8 +26,8 @@ String keyMapping[8][9] = {
 
 String keyMappingShift[8][9] = {
   { "$", "%", "(", "!", ")", "ß", "", "", "`" },
-  { "§", "&", "/", "\"", "j", "=", "Ö", "", "lL" },
-  { "W", "R", "Z", "Q", "I", "P", "*", "", "#'" },
+  { "§", "&", "/", "\"", "j", "=", "Ö", "", "L" },
+  { "W", "R", "Z", "Q", "I", "P", "*", "", "''" },
   { "E", "T", "H", "Y", "U", "O", "Ü", "", "K" },
   { "D", "C", "G", "A", "B", "M", "", "", ":" },
   { "X", "F", "V", "S", "N", ",", "", "", "_" },
@@ -44,6 +44,8 @@ bool newCycle = false;
 String lastKey = "";
 long startOfCurrentKey = 0;
 String currentKey = "";
+
+String text = "";
 
 struct KeyInfo {
   bool shift;
@@ -85,11 +87,14 @@ void setupWiFi() {
 
 void onKey(String key) {
   Serial.println(key);
-  if (key == " ") {
-    write("weather");
-    String answer = getCommandResult("weather");
+  if (key == "\n") {
+    Serial.printf("Input command: %s", text);
+    String answer = getCommandResult(text);
     write(answer);
     Serial.println(answer);
+    text = "";
+  } else {
+    text += key;
   }
 }
 

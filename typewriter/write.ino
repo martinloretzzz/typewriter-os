@@ -17,7 +17,8 @@ KeyInfo getPinAndCycleFromKey(String key) {
       }
     }
   }
-  return {false, 5, 0};
+  // Space for invalid char
+  return {false, 6, 8};
 }
 
 void writeKey(String key) {
@@ -41,7 +42,7 @@ void writeKey(String key) {
           pinMode(pin, OUTPUT);
           digitalWrite(pin, LOW);
         }
-        if (t == timeOffset + 1) {
+        if (t == timeOffset + 1 || (timeOffset == 8 && t == 0)) {
           pinMode(pin, INPUT);
         }
       }
@@ -55,8 +56,8 @@ void writeKey(String key) {
       }
       delay(1);
     }
-    pinMode(pin, INPUT);
   }
+  pinMode(pin, INPUT);
 
   delay(TIME_BETWEEN_CHAR);
 }
@@ -64,6 +65,7 @@ void writeKey(String key) {
 void write(String text) {
   delay(200);
   for (int i = 0; i < text.length(); i++) {
-    writeKey(text.substring(i, i + 1));
+    char c = text.charAt(i);
+    writeKey(String(c));
   }
 }

@@ -17,5 +17,14 @@ String getCommandResult(String command) {
   }
 
   http.end();
-  return payload;
+  return removeStringQuotes(payload);
+}
+
+String removeStringQuotes(String input) {
+  String text = input;
+  if (input.length() > 1 && input.charAt(0) == '"' && input.charAt(input.length() - 1) == '"') {
+    text = input.substring(1, input.length() - 1);
+  }
+  text.replace("\\n", "\n");
+  return text;
 }
