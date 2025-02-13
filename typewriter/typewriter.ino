@@ -11,7 +11,7 @@
 // const char *api = "...";
 
 #define ROW_SELECT_PIN 4
-#define TIME_BETWEEN_CHAR 40
+#define TIME_BETWEEN_CHAR 60
 
 String keyMapping[8][9] = {
   { "4", "5", "8", "1", "9", "ß", "FILE", "TW/WP", "´" },
@@ -25,15 +25,14 @@ String keyMapping[8][9] = {
 };
 
 String keyMappingShift[8][9] = {
-  { "$", "%", "(", "!", ")", "ß", "", "", "`" },
-  { "§", "&", "/", "\"", "j", "=", "Ö", "", "L" },
-  { "W", "R", "Z", "Q", "I", "P", "*", "", "''" },
-  { "E", "T", "H", "Y", "U", "O", "Ü", "", "K" },
-  { "D", "C", "G", "A", "B", "M", "", "", ":" },
-  { "X", "F", "V", "S", "N", ",", "", "", "_" },
-  { "", "", "", "", "", "", "", " ", "Ä" },
-  { "", "", "", "", "", "", "", "", "" }
-};
+    {"$", "%", "(", "!", ")", "?", "", "", "`"},
+    {"§", "&", "/", "\"", "J", "=", "Ö", "", "L"},
+    {"W", "R", "Z", "Q", "I", "P", "*", "", "'"},
+    {"E", "T", "H", "Y", "U", "O", "Ü", "", "K"},
+    {"D", "C", "G", "A", "B", "M", "", "", ":"},
+    {"X", "F", "V", "S", "N", ",", "", "", "_"},
+    {"", "", "", "", "", "", "", " ", "Ä"},
+    {"", "", "", "", "", "", "", "", ""}};
 
 int pinMapping[8] = { 23, 22, 21, 19, 18, 5, 17, 16 };
 
@@ -91,7 +90,6 @@ void onKey(String key) {
     Serial.printf("Input command: %s", text);
     String answer = getCommandResult(text);
     write(answer);
-    Serial.println(answer);
     text = "";
   } else {
     text += key;

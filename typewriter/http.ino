@@ -26,5 +26,6 @@ String removeStringQuotes(String input) {
     text = input.substring(1, input.length() - 1);
   }
   text.replace("\\n", "\n");
+  text.replace("\\", "");
   return text;
 }

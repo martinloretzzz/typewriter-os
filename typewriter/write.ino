@@ -1,8 +1,19 @@
+void delayMicrosecondsNonBlocking(unsigned long us) {
+  unsigned long start = micros();
+  while (micros() - start < us) {
+    yield();
+  }
+}
+
+void delayNonBlocking(unsigned long ms) {
+  delayMicrosecondsNonBlocking(1000 * ms);
+}
+
 void waitForStartOfCycle() {
   newCycle = false;
   while (!newCycle) {
     newCycle = false;
-    delayMicroseconds(1);
+    delayMicrosecondsNonBlocking(1);
   }
 }
 
@@ -33,16 +44,16 @@ void writeKey(String key) {
 
   waitForStartOfCycle();
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 4; i++) {
     for (int t = 0; t < 9; t++) {
-      delay(1);
+      delayNonBlocking(1);
       // Shift key needs to be pressed before key itself
       if (!shift || (shift && i != 0)) {
         if (t == timeOffset) {
           pinMode(pin, OUTPUT);
           digitalWrite(pin, LOW);
         }
-        if (t == timeOffset + 1 || (timeOffset == 8 && t == 0)) {
+        if ((t == timeOffset + 1) || (timeOffset == 8 && t == 0)) {
           pinMode(pin, INPUT);
         }
       }
@@ -54,18 +65,20 @@ void writeKey(String key) {
       if (shift && t == shiftOffset + 1) {
         pinMode(shiftPin, INPUT);
       }
-      delay(1);
+      delayNonBlocking(1);
     }
   }
   pinMode(pin, INPUT);
 
-  delay(TIME_BETWEEN_CHAR);
+  delayNonBlocking(TIME_BETWEEN_CHAR);
 }
 
 void write(String text) {
-  delay(200);
+  delayNonBlocking(200);
   for (int i = 0; i < text.length(); i++) {
     char c = text.charAt(i);
     writeKey(String(c));
+    Serial.print(c);
   }
+  Serial.println();
 }
