@@ -1,3 +1,5 @@
 __pycache__
 .env
 typewriter/config.h
+data/document-x.txt
+.vscode

@@ -4,6 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     long: float
     lat: float
+    telegram_token: str
     ai_base_url: str
     ai_api_key: str
     ai_model_name: str

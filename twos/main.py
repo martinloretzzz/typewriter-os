@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from twos.document.document_app import get_document
 from twos.ai.ai_app import AIChatApp
 from twos.settings import get_settings
+from twos.telegram.telegram_app import TelegramApp
 from twos.time.time_app import get_time
 from twos.weather.weather import get_weather
 
@@ -17,7 +18,8 @@ apps = {
     "time": lambda p: get_time(),
     "weather": lambda p: get_weather(long=config.long, lat=config.lat),
     "document": lambda p: get_document(),
-    "ai": AIChatApp(config)
+    "ai": AIChatApp(config),
+    "telegram": TelegramApp(config)
 }
 
 @app.get("/")
