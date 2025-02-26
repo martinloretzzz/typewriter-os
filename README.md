@@ -2,11 +2,11 @@
 
 ## Install
 
-`pip install pydantic-settings pytz python-telegram-bot[job-queue] "fastapi[standard]"`
+`pip install pydantic-settings pytz python-telegram-bot[job-queue] "fastapi[standard] openai"`
 
 ## Run fastapi server
 
-`fastapi dev os/main.py`
+`fastapi dev twos/main.py --host 0.0.0.0`
 
 ## Run emulator
 
