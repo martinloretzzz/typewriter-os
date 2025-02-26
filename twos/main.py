@@ -13,6 +13,7 @@ apps = {
     "time": lambda p: get_time(),
     "weather": lambda p: get_weather(long=config.long, lat=config.lat),
     "document": lambda p: get_document(),
+    "ai": AIChatApp(config)
 }
 
 @app.get("/")
@@ -24,4 +25,6 @@ async def run_app(command: str, q: Union[str, None] = None):
     app_name, parameters = command, None
     if " " in command:
         app_name, parameters = command.split(" ", 1)
-    return apps[app_name](parameters)
+    if not app_name in apps:
+        return f"App {app_name} not found.\n"
+    return apps[app_name](parameters) + "\n"
