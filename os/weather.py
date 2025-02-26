@@ -19,9 +19,9 @@ def get_weather(long, lat):
     weather_desc_today = wmo_codes[weather["daily"]['weather_code'][0]]
     rain = 2 # weather["daily"]['precipitation_sum'][0]
 
-    return f"{weather_desc_now} {round(weather['current']['temperature_2m'])}{temp_unit} " + \
+    return (f"{weather_desc_now} {round(weather['current']['temperature_2m'])}{temp_unit} " + \
             f"{round(weather["daily"]['temperature_2m_max'][0])}/{round(weather["daily"]['temperature_2m_min'][0])}{temp_unit}" + \
-            (f" {rain}{rain_unit}" if rain > 0 else "")
+            (f" {rain}{rain_unit}" if rain > 0 else "")).replace("°", "")
 
 wmo_codes = {
     0: "Sunny",
