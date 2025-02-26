@@ -1,7 +1,7 @@
 from typing import Union
 
 from fastapi import FastAPI
-from document_app import get_document
+from os.document.document_app import get_document
 from settings import get_settings
 from time_app import get_time
 from weather import get_weather
@@ -16,8 +16,9 @@ async def read_root():
 apps = {
     "time": lambda: get_time(),
     "weather": lambda: get_weather(long=config.long, lat=config.lat),
+    "document": lambda: get_document(),
 }
 
-@app.get("/command/{app_name}")
-async def run_app(app_name: str, q: Union[str, None] = None):
-    return apps[app_name]()
+@app.get("/command/{command}")
+async def run_app(command: str, q: Union[str, None] = None):
+    return apps[command]()
