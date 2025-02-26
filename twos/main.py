@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from twos.document.document_app import DocumentApp
 from twos.ai.ai_app import AIChatApp
+from twos.hackernews.hackernews_app import HackernewsApp
 from twos.settings import get_settings
 from twos.telegram.telegram_app import TelegramApp
 from twos.time.time_app import TimeApp
@@ -14,7 +15,10 @@ apps = {
     "weather": WeatherApp(config),
     "document": DocumentApp(config),
     "ai": AIChatApp(config),
-    "telegram": TelegramApp(config)
+    "telegram": TelegramApp(config),
+    "tg": TelegramApp(config),
+    "hackernews": HackernewsApp(config),
+    "hn": HackernewsApp(config)
 }
 
 class CommandMsg(BaseModel):
