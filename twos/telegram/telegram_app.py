@@ -7,13 +7,13 @@ class TelegramApp:
         self.chat_ids = set()
         self.read_updates = set()
 
-    def __call__(self, parameters):
+    def __call__(self, params):
         messages = self.get_updates()
         chat_ids = [msg['chat']['id'] for msg in messages]
         self.chat_ids.update(chat_ids)
 
-        if parameters is not None and parameters != " ":
-            self.send_message(parameters)
+        if params is not None and params != " ":
+            self.send_message(params)
 
         msg_texts = [msg['text'] for msg in messages]
 

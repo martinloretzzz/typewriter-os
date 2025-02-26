@@ -1,26 +1,26 @@
-from typing import Union
 from fastapi import FastAPI
 from pydantic import BaseModel
-from twos.document.document_app import get_document
+from twos.document.document_app import DocumentApp
 from twos.ai.ai_app import AIChatApp
 from twos.settings import get_settings
 from twos.telegram.telegram_app import TelegramApp
-from twos.time.time_app import get_time
-from twos.weather.weather import get_weather
+from twos.time.time_app import TimeApp
+from twos.weather.weather_app import WeatherApp
 
-app = FastAPI()
 config = get_settings()
+
+apps = {
+    "time": TimeApp(config),
+    "weather": WeatherApp(config),
+    "document": DocumentApp(config),
+    "ai": AIChatApp(config),
+    "telegram": TelegramApp(config)
+}
 
 class CommandMsg(BaseModel):
     command: str
 
-apps = {
-    "time": lambda p: get_time(),
-    "weather": lambda p: get_weather(long=config.long, lat=config.lat),
-    "document": lambda p: get_document(),
-    "ai": AIChatApp(config),
-    "telegram": TelegramApp(config)
-}
+app = FastAPI()
 
 @app.get("/")
 async def read_root():
@@ -29,9 +29,9 @@ async def read_root():
 @app.post("/command/")
 async def run_app(body: CommandMsg):
     command = body.command
-    app_name, parameters = command, None
+    app_name, params = command, None
     if " " in command:
-        app_name, parameters = command.split(" ", 1)
+        app_name, params = command.split(" ", 1)
     if not app_name in apps:
         return f"App {app_name} not found.\n"
-    return apps[app_name](parameters) + "\n"
+    return apps[app_name](params) + "\n"

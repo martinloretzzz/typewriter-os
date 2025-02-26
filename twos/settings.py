@@ -2,8 +2,10 @@ from functools import lru_cache
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
+    timezone: str
     long: float
     lat: float
+    document_path: str
     telegram_token: str
     ai_base_url: str
     ai_api_key: str

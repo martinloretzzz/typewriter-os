@@ -9,13 +9,13 @@ class AIChatApp:
 Output only in plain text, without any markdown or images.
 Make a short response."""
 
-    def __call__(self, parameters):
-        if parameters is None or parameters == " ": return ""
+    def __call__(self, params):
+        if params is None or params == " ": return ""
         completion = self.client.chat.completions.create(
             model=self.model_name,
             messages=[
                 {"role": "system", "content": self.system_prompt},
-                {"role": "user", "content": parameters},
+                {"role": "user", "content": params},
             ],
             stream=False,
             temperature=0
