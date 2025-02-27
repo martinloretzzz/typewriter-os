@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+import textwrap
 from twos.document.document_app import DocumentApp
 from twos.ai.ai_app import AIChatApp
 from twos.hackernews.hackernews_app import HackernewsApp
@@ -24,6 +25,10 @@ apps = {
 class CommandMsg(BaseModel):
     command: str
 
+def format_output(text):
+    return "\n".join("\n".join(textwrap.wrap(line, 64, replace_whitespace=False))
+                         if line else "" for line in (text + "\n").split("\n"))
+
 app = FastAPI()
 
 @app.get("/")
@@ -37,5 +42,8 @@ async def run_app(body: CommandMsg):
     if " " in command:
         app_name, params = command.split(" ", 1)
     if not app_name in apps:
-        return f"App {app_name} not found.\n"
-    return apps[app_name](params) + "\n"
+        return f"na\n"
+    print(f"App: {app_name}, Params: {params}")
+    response = format_output(apps[app_name](params))
+    print(response)
+    return response
