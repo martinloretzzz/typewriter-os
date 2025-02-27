@@ -2,7 +2,7 @@
 
 ## Install
 
-`pip install pydantic-settings pytz python-telegram-bot[job-queue] "fastapi[standard] openai beautifulsoup4"`
+`pip install pydantic-settings pytz "fastapi[standard]" openai beautifulsoup4`
 
 ## Run fastapi server
 

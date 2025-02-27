@@ -3,3 +3,4 @@ __pycache__
 typewriter/config.h
 data/document-x.txt
 .vscode
+.venv
