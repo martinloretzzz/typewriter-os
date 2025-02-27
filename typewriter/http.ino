@@ -4,7 +4,6 @@ String getCommandResult(String command) {
 
   String url = String(api) + "/command/";
   http.begin(url);
-  http.setTimeout(4000);
   http.addHeader("Content-Type", "application/json");
 
   String requestData = "{\"command\": \"" + command + "\"}";
