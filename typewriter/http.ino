@@ -1,5 +1,7 @@
 String getCommandResult(String command) {
   HTTPClient http;
+  http.setTimeout(5000);
+
   String payload;
 
   String url = String(api) + "/command/";
