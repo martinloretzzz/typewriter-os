@@ -2,9 +2,13 @@ String getCommandResult(String command) {
   HTTPClient http;
   String payload;
 
-  String url = String(api) + "/command/" + command;
-  http.begin(url.c_str());
-  int httpCode = http.GET();
+  String url = String(api) + "/command/";
+  http.begin(url);
+  http.setTimeout(4000);
+  http.addHeader("Content-Type", "application/json");
+
+  String requestData = "{\"command\": \"" + command + "\"}";
+  int httpCode = http.POST(requestData);
 
   if (httpCode > 0) {
     Serial.printf("[HTTP] GET code: %d\n", httpCode);
