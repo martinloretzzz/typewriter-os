@@ -12,19 +12,19 @@ class HackernewsApp:
         if params is not None:
             if params.isdigit():
                 return self.hn_individual_story(int(params))
-        return self.hn_top_stories()
+        return self.hn_top_stories(count=8 if params == "a" else 4)
 
-    def hn_top_stories(self):
-        top_stories = self.get_top_stories(list(range(8)))
-        titles = [story["title"] for story in top_stories]
+    def hn_top_stories(self, count=4):
+        top_stories = self.get_top_stories(list(range(count)))
+        titles = [f"{i} " + story["title"] for i, story in enumerate(top_stories)]
         return "\n".join(titles)
     
     def hn_individual_story(self, index):
         story = self.get_top_stories([index])[0]
         print(story)
         website_content = self.get_site_text(story["url"]) if "url" in story else story["text"]
-        summary = self.ai_summarizer(website_content)
-        url_info = (story["url"]+"\n") if "url" in story else ""
+        summary = self.ai_summarizer(website_content) if website_content != "" else ""
+        url_info = (story["url"]+"\n") if "url" in story else "No Summary"
         return f"{story["title"]} by {story["by"]} {story["score"]}U\n{url_info}{summary}"
 
     def get_top_stories(self, indices):
