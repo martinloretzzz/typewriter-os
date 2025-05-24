@@ -7,7 +7,7 @@ class TelegramApp:
         self.chat_ids = set()
         self.read_updates = set()
 
-    def __call__(self, params):
+    def __call__(self, params, prefix=""):
         messages = self.get_updates()
         chat_ids = [msg['chat']['id'] for msg in messages]
         self.chat_ids.update(chat_ids)
@@ -15,7 +15,7 @@ class TelegramApp:
         if params is not None and params != " ":
             self.send_message(params)
 
-        msg_texts = [msg['text'] for msg in messages]
+        msg_texts = [prefix + msg['text'] for msg in messages]
 
         if len(msg_texts) > 0:
             return "\n".join(msg_texts)

@@ -56,3 +56,9 @@ async def run_app(body: CommandMsg):
     response = format_output(apps[app_name](params))
     print(response)
     return response
+
+@app.get("/msg/")
+async def run_app():
+    telegram_messages = apps["tg"](None, prefix="TG: ")
+    if telegram_messages == "-": return ""
+    return format_output(telegram_messages)
