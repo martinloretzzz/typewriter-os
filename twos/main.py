@@ -8,6 +8,7 @@ from twos.settings import get_settings
 from twos.telegram.telegram_app import TelegramApp
 from twos.time.time_app import TimeApp
 from twos.weather.weather_app import WeatherApp
+from twos.xfiles.xfiles_app import XFilesApp
 
 config = get_settings()
 
@@ -19,7 +20,8 @@ apps = {
     "telegram": TelegramApp(config),
     "tg": TelegramApp(config),
     "hackernews": HackernewsApp(config),
-    "hn": HackernewsApp(config)
+    "hn": HackernewsApp(config),
+    "x": XFilesApp(config),
 }
 
 class CommandMsg(BaseModel):
@@ -28,6 +30,10 @@ class CommandMsg(BaseModel):
 def format_output(text):
     return "\n".join("\n".join(textwrap.wrap(line, 64, replace_whitespace=False))
                          if line else "" for line in (text + "\n").split("\n"))
+
+def remap_broken_keys(text):
+    return text.replace("+", "l").replace("ü", "k")
+
 
 app = FastAPI()
 
@@ -39,8 +45,11 @@ async def read_root():
 async def run_app(body: CommandMsg):
     command = body.command
     app_name, params = command, None
+    if command == "": return "\n"
     if " " in command:
         app_name, params = command.split(" ", 1)
+        # l isn't working on the typewriter, so use + as an alternative
+        params = remap_broken_keys(params)
     if not app_name in apps:
         return f"na\n"
     print(f"App: {app_name}, Params: {params}")

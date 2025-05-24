@@ -1,6 +1,6 @@
 String getCommandResult(String command) {
   HTTPClient http;
-  http.setTimeout(5000);
+  http.setTimeout(10000);
 
   String payload;
 
