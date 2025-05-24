@@ -10,6 +10,8 @@ class Settings(BaseSettings):
     ai_base_url: str
     ai_api_key: str
     ai_model_name: str
+    xfiles_ghost_mode: bool = False
+    xfiles_ghost_interval: int = 10 * 60 # s
     model_config = SettingsConfigDict(env_file=".env")
 
 @lru_cache

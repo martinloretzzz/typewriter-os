@@ -59,6 +59,12 @@ async def run_app(body: CommandMsg):
 
 @app.get("/msg/")
 async def run_app():
-    telegram_messages = apps["tg"](None, prefix="TG: ")
-    if telegram_messages == "-": return ""
-    return format_output(telegram_messages)
+    output = []
+    # telegram_messages = apps["tg"](None)
+    # if telegram_messages != "-":
+    #     output.append(telegram_messages)
+    xfiles_output = apps["x"].msg()
+    if xfiles_output is not None:
+        output.append(xfiles_output)
+    if len(output) == 0: return ""
+    return format_output("\n".join(output))

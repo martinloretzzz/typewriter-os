@@ -27,7 +27,7 @@ String getCommandResult(String command) {
 
 String getMessages() {
   HTTPClient http;
-  http.setTimeout(2000);
+  http.setTimeout(10000);
 
   String payload;
 
