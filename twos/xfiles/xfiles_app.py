@@ -43,8 +43,8 @@ class XFilesApp:
         if time.time() >= self.next_update_time and self.ghost_mode:
             self.next_update_time = self.get_next_update_time()
             keywords = random.sample(x_files_keywords, 3)
-            return self.__call__(", ".join(keywords))
+            return self.__call__(", ".join(keywords)) + "\n\n"
         return None
     
     def get_next_update_time(self):
-        return time.time() + random.randint(int(0.2 *  self.update_interval), self.update_interval)
+        return time.time() + random.randint(int(0.5 *  self.update_interval), self.update_interval)

@@ -104,7 +104,9 @@ void updateMsg() {
   if (millis() - lastMsgUpdate > 5000) {
     lastMsgUpdate = millis();
     String msg = getMessages();
-    write(msg);
+    if (msg != "") {
+      write(msg);
+    }
   }
 }
 
